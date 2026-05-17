@@ -1,10 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <text x="50%" y="52%" dominant-baseline="central" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="60">R</text>
-  <text x="50%" y="78%" dominant-baseline="central" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="500" font-size="28" opacity="0.6">DP</text>
+  <rect width="128" height="128" rx="24" class="bg"/>
+  <text x="50%" y="52%" dominant-baseline="central" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="60" class="primary">R</text>
+  <text x="50%" y="78%" dominant-baseline="central" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="500" font-size="28" class="secondary">DP</text>
   <style>
-    text { fill: #111; }
+    .bg { fill: #f0f0f0; }
+    .primary { fill: #111; }
+    .secondary { fill: #555; }
     @media (prefers-color-scheme: dark) {
-      text { fill: #fff; }
+      .bg { fill: #222; }
+      .primary { fill: #fff; }
+      .secondary { fill: #aaa; }
     }
   </style>
 </svg>
