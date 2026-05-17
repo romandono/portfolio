@@ -7,7 +7,7 @@ export const en = {
   },
   hero: {
     greeting: 'Hi, I\'m',
-    name: 'rdono',
+    name: 'Román Dono Pérez',
     role: 'Fullstack Developer',
     tagline: 'I build modern, scalable web applications',
     cta: 'Get in touch',

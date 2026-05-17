@@ -9,7 +9,7 @@ export const es: Dictionary = {
   },
   hero: {
     greeting: 'Hola, soy',
-    name: 'rdono',
+    name: 'Román Dono Pérez',
     role: 'Desarrollador Fullstack',
     tagline: 'Construyo aplicaciones web modernas y escalables',
     cta: 'Contáctame',
