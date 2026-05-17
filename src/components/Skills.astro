@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+
+export interface Props {
+  dict: {
+    title: string;
+  };
+}
+
+const { dict } = Astro.props;
+const entries = await getCollection('skills');
+entries.sort((a, b) => a.data.order - b.data.order);
+
+const grouped = entries.reduce<Record<string, typeof entries>>((acc, e) => {
+  const cat = e.data.category;
+  if (!acc[cat]) acc[cat] = [];
+  acc[cat].push(e);
+  return acc;
+}, {});
+---
+
+<section class="section" id="skills">
+  <div class="container">
+    <h2 class="section-title">{dict.title}</h2>
+    <div class="skills-grid">
+      {Object.entries(grouped).map(([category, skills]) => (
+        <div class="skills-category">
+          <h3 class="skills-category__title">{category}</h3>
+          <div class="skills-list">
+            {skills.map((s) => (
+              <div class="skill-item">
+                <div class="skill-item__header">
+                  <span class="skill-item__name">{s.data.name}</span>
+                  <span class="skill-item__level">{s.data.level}%</span>
+                </div>
+                <div class="skill-item__bar">
+                  <div class="skill-item__fill" style={`width: ${s.data.level}%`}></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .skills-category__title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .skill-item__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+  }
+
+  .skill-item__level {
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .skill-item__bar {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--color-bg-secondary);
+    overflow: hidden;
+  }
+
+  .skill-item__fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-accent-hover));
+    transition: width 0.6s ease;
+  }
+</style>

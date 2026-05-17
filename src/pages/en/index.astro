@@ -1,0 +1,26 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import Experience from '../../components/Experience.astro';
+import Projects from '../../components/Projects.astro';
+import Skills from '../../components/Skills.astro';
+import Contact from '../../components/Contact.astro';
+import { getDictionary } from '../../i18n';
+
+const dict = getDictionary('en');
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout
+  title="rdono — Fullstack Developer"
+  description="Fullstack developer building modern, scalable web applications."
+  lang="en"
+  alternateLang="es"
+  alternateUrl={`${base}es/`}
+>
+  <Hero dict={dict.hero} />
+  <Experience dict={{ title: dict.experience.title, present: dict.experience.present, entries: dict.experienceEntries }} />
+  <Projects dict={{ title: dict.projects.title, viewProject: dict.projects.viewProject, viewRepo: dict.projects.viewRepo, entries: dict.projectEntries }} />
+  <Skills dict={{ title: dict.skills.title }} />
+  <Contact dict={dict.contact} />
+</Layout>

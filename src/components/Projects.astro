@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+
+export interface Props {
+  dict: {
+    title: string;
+    viewProject: string;
+    viewRepo: string;
+    entries: Record<string, { title: string; description: string }>;
+  };
+}
+
+const { dict } = Astro.props;
+const entries = await getCollection('projects');
+entries.sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="section" id="projects">
+  <div class="container">
+    <h2 class="section-title">{dict.title}</h2>
+    <div class="projects-grid">
+      {entries.map((e) => {
+        const t = dict.entries[e.id] || { title: e.data.title, description: e.data.description };
+        return (
+          <article class="project-card">
+            <div class="project-card__body">
+              <h3>{t.title}</h3>
+              <p>{t.description}</p>
+              <div class="project-card__tags">
+                {e.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+              </div>
+            </div>
+            <div class="project-card__links">
+              {e.data.url && <a href={e.data.url} target="_blank" rel="noopener noreferrer">{dict.viewProject} →</a>}
+              {e.data.repo && <a href={e.data.repo} target="_blank" rel="noopener noreferrer" class="project-card__repo">{dict.viewRepo} →</a>}
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    transition: all var(--transition);
+  }
+
+  .project-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-accent);
+  }
+
+  .project-card__body h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-card__body p {
+    font-size: 0.925rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .project-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-card__links {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .project-card__repo {
+    color: var(--color-text-secondary);
+  }
+
+  .project-card__repo:hover {
+    color: var(--color-accent);
+  }
+</style>

@@ -1,0 +1,74 @@
+---
+export interface Props {
+  dict: {
+    title: string;
+    subtitle: string;
+    email: string;
+    emailValue: string;
+    location: string;
+    locationValue: string;
+    getInTouch: string;
+  };
+}
+
+const { dict } = Astro.props;
+---
+
+<section class="section" id="contact">
+  <div class="container">
+    <h2 class="section-title">{dict.title}</h2>
+    <p class="contact__subtitle">{dict.subtitle}</p>
+    <div class="contact__grid">
+      <div class="contact__item">
+        <span class="contact__label">{dict.email}</span>
+        <a href={`mailto:${dict.emailValue}`} class="contact__value">{dict.emailValue}</a>
+      </div>
+      <div class="contact__item">
+        <span class="contact__label">{dict.location}</span>
+        <span class="contact__value">{dict.locationValue}</span>
+      </div>
+    </div>
+    <div class="contact__cta">
+      <a href={`mailto:${dict.emailValue}`} class="hero__cta">{dict.getInTouch}</a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .contact__subtitle {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+  }
+
+  .contact__grid {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .contact__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .contact__label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    font-weight: 600;
+  }
+
+  .contact__value {
+    font-size: 1.1rem;
+    color: var(--color-text);
+  }
+
+  .contact__cta {
+    margin-top: 1rem;
+  }
+</style>
