@@ -56,6 +56,24 @@ const base = import.meta.env.BASE_URL;
               <path class="moon-icon" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" style="display:none"/>
             </svg>
           </button>
+          <button class="hamburger" aria-label={lang === 'en' ? 'Open menu' : 'Abrir menú'} id="hamburgerToggle">
+            <span class="hamburger__line"></span>
+            <span class="hamburger__line"></span>
+            <span class="hamburger__line"></span>
+          </button>
+        </div>
+      </div>
+      <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-menu__links">
+          <li><a href={`${base}${lang}/#experience`}>{(lang === 'en' ? 'Experience' : 'Experiencia').trim()}</a></li>
+          <li><a href={`${base}${lang}/#projects`}>{(lang === 'en' ? 'Projects' : 'Proyectos').trim()}</a></li>
+          <li><a href={`${base}${lang}/#skills`}>{(lang === 'en' ? 'Skills' : 'Habilidades').trim()}</a></li>
+          <li><a href={`${base}${lang}/#contact`}>{(lang === 'en' ? 'Contact' : 'Contacto').trim()}</a></li>
+        </ul>
+        <div class="mobile-menu__actions">
+          <a href={alternateUrl || `${base}${alternateLang}/`} class="nav__lang" aria-label={lang === 'en' ? 'Switch to Spanish' : 'Cambiar a Inglés'}>
+            {lang === 'en' ? 'ES' : 'EN'}
+          </a>
         </div>
       </div>
     </nav>
@@ -83,6 +101,22 @@ const base = import.meta.env.BASE_URL;
         const next = current === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);
+      });
+
+      const hamburger = document.getElementById('hamburgerToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
+      hamburger?.addEventListener('click', () => {
+        const isOpen = mobileMenu?.classList.toggle('mobile-menu--open');
+        hamburger?.classList.toggle('hamburger--active');
+        document.body.classList.toggle('body--menu-open');
+      });
+
+      mobileMenu?.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('mobile-menu--open');
+          hamburger?.classList.remove('hamburger--active');
+          document.body.classList.remove('body--menu-open');
+        });
       });
     </script>
   </body>
@@ -208,13 +242,107 @@ const base = import.meta.env.BASE_URL;
   [data-theme='light'] .sun-icon { display: block; }
   [data-theme='light'] .moon-icon { display: none; }
 
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    gap: 5px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    transition: all var(--transition);
+  }
+
+  .hamburger:hover {
+    background: var(--color-bg-secondary);
+  }
+
+  .hamburger__line {
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: all var(--transition);
+  }
+
+  .hamburger--active .hamburger__line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .hamburger--active .hamburger__line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger--active .hamburger__line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-bg);
+    z-index: 99;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition), visibility var(--transition);
+  }
+
+  .mobile-menu--open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-menu__links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .mobile-menu__links a {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+    transition: color var(--transition);
+  }
+
+  .mobile-menu__links a:hover {
+    color: var(--color-accent);
+  }
+
+  .mobile-menu__actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .body--menu-open {
+    overflow: hidden;
+  }
+
   @media (max-width: 640px) {
     .nav__links {
-      gap: 1rem;
+      display: none;
     }
-    .nav__links a {
-      font-size: 0.8rem;
+
+    .hamburger {
+      display: flex;
     }
+
+    .mobile-menu {
+      display: flex;
+    }
+
     .footer__inner {
       flex-direction: column;
       gap: 1rem;
